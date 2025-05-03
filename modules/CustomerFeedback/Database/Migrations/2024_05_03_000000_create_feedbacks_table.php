@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('feedbacks', function (Blueprint $table) {
             $table->id();
             $table->text('message');
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
