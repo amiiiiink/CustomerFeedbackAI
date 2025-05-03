@@ -2,6 +2,7 @@
 namespace Modules\CustomerFeedback\Http\Controllers;
 
 
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\CustomerFeedback\DTOs\FeedbackDTO;
 use Modules\CustomerFeedback\Enums\FeedbackStatus;
@@ -12,6 +13,24 @@ use Modules\CustomerFeedback\Services\FeedbackService;
 class FeedbackController extends Controller
 {
     public function __construct(protected readonly FeedbackService $service) {}
+
+    public function index(Request $request)
+    {
+        $query = Feedback::query();
+        if ($request->has('status')) {
+            $status = $request->get('status');
+
+            if (! FeedbackStatus::tryFrom($status)) {
+                return response()->json(['error' => 'Invalid status'], 422);
+            }
+
+            $query->where('status', $status);
+        }
+
+        return response()->json($query->get());
+
+    }
+
     public function store(StoreFeedbackRequest $request)
     {
         $dto = FeedbackDTO::fromArray($request->validated());
@@ -20,7 +39,7 @@ class FeedbackController extends Controller
     }
     public function approve($id)
     {
-        $feedback = Feedback::findOrFail($id);
+        $feedback = Feedback::query()->findOrFail($id);
         $feedback->status = FeedbackStatus::APPROVED;
         $feedback->save();
 
@@ -31,7 +50,7 @@ class FeedbackController extends Controller
 
     public function reject($id)
     {
-        $feedback = Feedback::findOrFail($id);
+        $feedback = Feedback::query()->findOrFail($id);
         $feedback->status = FeedbackStatus::REJECTED;
         $feedback->save();
 
