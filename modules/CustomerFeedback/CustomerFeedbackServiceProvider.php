@@ -4,6 +4,8 @@ namespace Modules\CustomerFeedback;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Modules\CustomerFeedback\Contracts\Repositories\FeedbackRepositoryInterface;
+use Modules\CustomerFeedback\Repositories\FeedbackRepository;
 
 class CustomerFeedbackServiceProvider extends ServiceProvider
 {
@@ -16,6 +18,6 @@ class CustomerFeedbackServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        //
+        $this->app->bind(FeedbackRepositoryInterface::class, FeedbackRepository::class);
     }
 }
