@@ -3,6 +3,7 @@
 namespace Modules\CustomerFeedback\Tests\Unit;
 
 use Modules\CustomerFeedback\Contracts\Repositories\FeedbackRepositoryInterface;
+use Modules\CustomerFeedback\DTOs\FeedbackDTO;
 use Modules\CustomerFeedback\Models\Feedback;
 use Modules\CustomerFeedback\Services\FeedbackService;
 use Tests\TestCase;
@@ -14,17 +15,21 @@ class FeedbackServiceTest extends TestCase
     {
         $mock = Mockery::mock(FeedbackRepositoryInterface::class);
 
+        $dto = new FeedbackDTO('خیلی خوب بود');
+
+//        $mock->shouldReceive('store')
+//            ->once()
+//            ->with(['message' => 'خیلی خوب بود'])
+//            ->andReturn(new Feedback(['message' => 'خیلی خوب بود']));
+
         $mock->shouldReceive('store')
             ->once()
-            ->with(['message' => 'خیلی خوب بود'])
+            ->with($dto->toArray())  // Passing the array conversion of the DTO
             ->andReturn(new Feedback(['message' => 'خیلی خوب بود']));
 
-        // جایگزین کردن mock در container لاراول
         $this->app->instance(FeedbackRepositoryInterface::class, $mock);
-
         $service = new FeedbackService($mock);
-
-        $feedback = $service->submit(['message' => 'خیلی خوب بود']);
+        $feedback = $service->submit($dto);
 
         $this->assertEquals('خیلی خوب بود', $feedback->message);
     }

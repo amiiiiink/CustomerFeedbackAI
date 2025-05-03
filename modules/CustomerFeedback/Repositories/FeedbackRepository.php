@@ -7,7 +7,6 @@ use Modules\CustomerFeedback\Models\Feedback;
 
 readonly class FeedbackRepository implements FeedbackRepositoryInterface
 {
-
     public function store(array $data): Feedback
     {
         return Feedback::query()->create($data);
