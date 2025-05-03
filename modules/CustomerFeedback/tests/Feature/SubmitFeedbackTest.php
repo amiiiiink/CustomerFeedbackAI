@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\CustomerFeedback\Tests\Feature;
+namespace Modules\CustomerFeedback\tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -9,8 +9,8 @@ class SubmitFeedbackTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function it_submits_customer_feedback()
+
+    public function test_it_submits_customer_feedback()
     {
         $response = $this->postJson('/customer-feedback', [
             'message' => 'این محصول عالی بود!',
