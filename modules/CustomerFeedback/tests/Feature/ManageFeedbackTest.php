@@ -19,9 +19,10 @@ class ManageFeedbackTest extends TestCase
         ]);
 
         $response = $this->patchJson("/manager/feedbacks/{$feedback->id}/approve");
+
         $response->assertOk()
             ->assertJson([
-                'status' => FeedbackStatus::APPROVED->value,
+                'message' => 'Feedback approved successfully.',
             ]);
 
         $this->assertDatabaseHas('feedbacks', [
@@ -40,7 +41,7 @@ class ManageFeedbackTest extends TestCase
         $response = $this->patchJson("/manager/feedbacks/{$feedback->id}/reject");
         $response->assertOk()
             ->assertJson([
-                'status' => FeedbackStatus::REJECTED->value,
+                'message' => 'Feedback rejected successfully.',
             ]);
 
         $this->assertDatabaseHas('feedbacks', [

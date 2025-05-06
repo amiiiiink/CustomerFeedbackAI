@@ -1,4 +1,5 @@
 <?php
+
 namespace Modules\CustomerFeedback\Http\Controllers;
 
 
@@ -12,7 +13,9 @@ use Modules\CustomerFeedback\Services\FeedbackService;
 
 class FeedbackController extends Controller
 {
-    public function __construct(protected readonly FeedbackService $service) {}
+    public function __construct(protected readonly FeedbackService $service)
+    {
+    }
 
     public function index(Request $request)
     {
@@ -20,7 +23,7 @@ class FeedbackController extends Controller
         if ($request->has('status')) {
             $status = $request->get('status');
 
-            if (! FeedbackStatus::tryFrom($status)) {
+            if (!FeedbackStatus::tryFrom($status)) {
                 return response()->json(['error' => 'Invalid status'], 422);
             }
 
@@ -37,25 +40,16 @@ class FeedbackController extends Controller
         $this->service->submit($dto);
         return response()->json(['message' => 'Feedback submitted successfully.'], 201);
     }
-    public function approve($id)
-    {
-        $feedback = Feedback::query()->findOrFail($id);
-        $feedback->status = FeedbackStatus::APPROVED;
-        $feedback->save();
 
-        return response()->json([
-            'status' => $feedback->status->value,
-        ]);
+    public function approve(int $id)
+    {
+        $this->service->approveOrReject(id: $id, status: FeedbackStatus::APPROVED);
+        return response()->json(['message' => 'Feedback approved successfully.'], 200);
     }
 
-    public function reject($id)
+    public function reject(int $id)
     {
-        $feedback = Feedback::query()->findOrFail($id);
-        $feedback->status = FeedbackStatus::REJECTED;
-        $feedback->save();
-
-        return response()->json([
-            'status' => $feedback->status->value,
-        ]);
+        $this->service->approveOrReject(id: $id, status: FeedbackStatus::REJECTED);
+        return response()->json(['message' => 'Feedback rejected successfully.'], 200);
     }
 }

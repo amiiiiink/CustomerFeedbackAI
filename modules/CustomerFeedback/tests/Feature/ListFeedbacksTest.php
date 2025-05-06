@@ -34,4 +34,16 @@ class ListFeedbacksTest extends TestCase
             ->assertJsonMissing(['message' => 'رد شده'])
             ->assertJsonFragment(['message' => 'در انتظار بررسی']);
     }
+    public function test_it_can_filter_feedbacks_by_approved_status()
+    {
+        Feedback::factory()->create(['message' => 'تأیید شده', 'status' => FeedbackStatus::APPROVED]);
+        Feedback::factory()->create(['message' => 'در انتظار بررسی', 'status' => FeedbackStatus::PENDING]);
+
+        $response = $this->getJson('/manager/feedbacks?status=approved');
+
+        $response->assertOk()
+            ->assertJsonFragment(['message' => 'تأیید شده'])
+            ->assertJsonMissing(['message' => 'در انتظار بررسی']);
+    }
+
 }
