@@ -1,4 +1,5 @@
 <?php
+
 namespace Modules\CustomerFeedback\Services;
 
 use Modules\CustomerFeedback\Contracts\Repositories\FeedbackRepositoryInterface;
@@ -8,7 +9,14 @@ use Modules\CustomerFeedback\Models\Feedback;
 
 readonly class FeedbackService
 {
-    public function __construct(protected FeedbackRepositoryInterface $repository) {}
+    public function __construct(protected FeedbackRepositoryInterface $repository)
+    {
+    }
+
+    public function filter(?FeedbackStatus $status): void
+    {
+        $this->repository->index($status);
+    }
 
     public function submit(FeedbackDTO $dto): Feedback
     {
@@ -22,6 +30,6 @@ readonly class FeedbackService
      */
     public function approveOrReject(int $id, FeedbackStatus $status): bool
     {
-        return $this->repository->changeStatus(id:$id,status:$status);
+        return $this->repository->changeStatus(id: $id, status: $status);
     }
 }

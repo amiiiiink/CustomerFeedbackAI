@@ -3,12 +3,11 @@
 namespace Modules\CustomerFeedback\Http\Controllers;
 
 
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\CustomerFeedback\DTOs\FeedbackDTO;
 use Modules\CustomerFeedback\Enums\FeedbackStatus;
+use Modules\CustomerFeedback\Http\Requests\FilterIndexFeedbackRequest;
 use Modules\CustomerFeedback\Http\Requests\StoreFeedbackRequest;
-use Modules\CustomerFeedback\Models\Feedback;
 use Modules\CustomerFeedback\Services\FeedbackService;
 
 class FeedbackController extends Controller
@@ -17,21 +16,11 @@ class FeedbackController extends Controller
     {
     }
 
-    public function index(Request $request)
+    public function index(FilterIndexFeedbackRequest $request)
     {
-        $query = Feedback::query();
-        if ($request->has('status')) {
-            $status = $request->get('status');
-
-            if (!FeedbackStatus::tryFrom($status)) {
-                return response()->json(['error' => 'Invalid status'], 422);
-            }
-
-            $query->where('status', $status);
-        }
-
-        return response()->json($query->get());
-
+        $status = $request->input('status');
+        $this->service->filter($status ? FeedbackStatus::tryFrom($status) : null);
+        return response()->json(['message' => 'Feedbacks list.']);
     }
 
     public function store(StoreFeedbackRequest $request)
