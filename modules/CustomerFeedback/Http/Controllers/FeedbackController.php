@@ -44,12 +44,12 @@ class FeedbackController extends Controller
     public function approve(int $id)
     {
         $this->service->approveOrReject(id: $id, status: FeedbackStatus::APPROVED);
-        return response()->json(['message' => 'Feedback approved successfully.'], 200);
+        return response()->json(['message' => 'Feedback approved successfully.']);
     }
 
     public function reject(int $id)
     {
         $this->service->approveOrReject(id: $id, status: FeedbackStatus::REJECTED);
-        return response()->json(['message' => 'Feedback rejected successfully.'], 200);
+        return response()->json(['message' => 'Feedback rejected successfully.']);
     }
 }
