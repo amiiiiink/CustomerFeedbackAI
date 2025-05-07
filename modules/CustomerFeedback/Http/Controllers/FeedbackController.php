@@ -9,6 +9,7 @@ use Modules\CustomerFeedback\Enums\FeedbackStatus;
 use Modules\CustomerFeedback\Http\Requests\FilterIndexFeedbackRequest;
 use Modules\CustomerFeedback\Http\Requests\StoreFeedbackRequest;
 use Modules\CustomerFeedback\Services\FeedbackService;
+use Modules\CustomerFeedback\Services\KafkaFeedbackProducer;
 
 class FeedbackController extends Controller
 {
@@ -40,5 +41,11 @@ class FeedbackController extends Controller
     {
         $this->service->approveOrReject(id: $id, status: FeedbackStatus::REJECTED);
         return response()->json(['message' => 'Feedback rejected successfully.']);
+    }
+
+    public function produceKafka()
+    {
+        $kafkaService =resolve(KafkaFeedbackProducer::class);
+        $kafkaService->execute(data:array('name'=>'amin'),topic: 'test-1');
     }
 }

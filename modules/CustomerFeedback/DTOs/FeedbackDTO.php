@@ -2,10 +2,10 @@
 
 namespace Modules\CustomerFeedback\DTOs;
 
-class FeedbackDTO
+readonly class FeedbackDTO
 {
     public function __construct(
-        public readonly string $message
+        public string $message
     ) {}
 
     public static function fromArray(array $data): self
