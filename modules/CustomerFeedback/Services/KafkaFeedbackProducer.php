@@ -11,8 +11,9 @@ class KafkaFeedbackProducer
     /**
      * @param array $data
      * @param string $topic
+     * @return string|null
      */
-    public function execute(array $data, string $topic)
+    public function execute(array $data, string $topic): string|null
     {
         $message = new Message(
             body: $data,
@@ -22,7 +23,6 @@ class KafkaFeedbackProducer
             $producer = Kafka::publish('localhost')->onTopic($topic)->withMessage($message);
             $producer->send();
             return "ok";
-            Log::info('kafka produce '.$topic.' successfully done. ');
         } catch (\Exception $e) {
             Log::error($e->getMessage());
         }
