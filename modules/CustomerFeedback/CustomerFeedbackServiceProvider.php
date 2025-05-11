@@ -19,5 +19,8 @@ class CustomerFeedbackServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(FeedbackRepositoryInterface::class, FeedbackRepository::class);
+        $this->commands([
+            \Modules\CustomerFeedback\Console\AnalyzeFeedbackCommand::class,
+        ]);
     }
 }
