@@ -1,6 +1,7 @@
 <?php
 namespace Modules\CustomerFeedback\Services;
 
+
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Junges\Kafka\Facades\Kafka;
@@ -23,7 +24,7 @@ class KafkaFeedbackProducer
             $producer = Kafka::publish('localhost')->onTopic($topic)->withMessage($message);
             $producer->send();
             return "ok";
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error($e->getMessage());
         }
     }
