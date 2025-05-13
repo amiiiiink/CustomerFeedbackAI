@@ -20,7 +20,7 @@ readonly class FeedbackService
 
     public function submit(FeedbackDTO $dto): Feedback
     {
-        return $this->repository->store($dto->toArray());
+        return $this->repository->store($dto);
     }
 
     /**
