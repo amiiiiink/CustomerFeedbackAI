@@ -9,6 +9,7 @@ use Modules\CustomerFeedback\Services\AnalyzeFeedbackService;
 
 class AnalyzeFeedbackConsumer implements Handler
 {
+
     public function __invoke(ConsumerMessage $message): void
     {
         $payload = $message->getBody();
