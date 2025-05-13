@@ -4,6 +4,7 @@ namespace Modules\CustomerFeedback\Console\Commands;
 
 use Illuminate\Console\Command;
 use Junges\Kafka\Facades\Kafka;
+use Junges\Kafka\Consumers\ConsumerBuilder;
 use Modules\CustomerFeedback\Kafka\Consumers\AnalyzeFeedbackConsumer;
 
 class AnalyzeFeedbackCommand extends Command
@@ -21,8 +22,9 @@ class AnalyzeFeedbackCommand extends Command
     {
         $this->info("Starting Kafka consumer for feedback analysis...");
 
-        Kafka::consumer(['feedback-topic'])
-            ->withConsumer(new AnalyzeFeedbackConsumer())
+        Kafka::consumer(['test-1'])
+            ->withConsumerGroupId('feedback-group')
+            ->withHandler(new AnalyzeFeedbackConsumer()) // NOT withConsumer
             ->build()
             ->consume();
     }

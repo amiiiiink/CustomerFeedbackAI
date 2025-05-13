@@ -2,21 +2,24 @@
 
 namespace Modules\CustomerFeedback\Kafka\Consumers;
 
-namespace Modules\CustomerFeedback\Kafka\Consumers;
-
-use Junges\Kafka\Message\Message;
 use Illuminate\Support\Facades\Log;
+use Junges\Kafka\Contracts\ConsumerMessage;
+use Junges\Kafka\Contracts\Handler;
 use Modules\CustomerFeedback\Services\AnalyzeFeedbackService;
 
-class AnalyzeFeedbackConsumer
+class AnalyzeFeedbackConsumer implements Handler
 {
-    public function __invoke(Message $message): void
+    public function __invoke(ConsumerMessage $message): void
     {
-        // Deserialize the payload
-        $payload = json_decode($message->getBody(), true);
-        // Optionally log it
+        $payload = $message->getBody();
+
+        if (!is_array($payload)) {
+            Log::warning('Invalid payload received', ['body' => $message->getBody()]);
+            return;
+        }
+
         Log::info('Received feedback:', $payload);
-        // Process the feedback using your service
+
         app(AnalyzeFeedbackService::class)->handle($payload);
     }
 }

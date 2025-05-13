@@ -11,7 +11,7 @@ class KafkaFeedbackProducerTest extends TestCase
     public function test_it_publish_message_to_kafka()
     {
         $kafkaService = resolve(KafkaFeedbackProducer::class);
-        $response = $kafkaService->execute(data: ['name' => 'amin'], topic: 'test-1');
+        $response = $kafkaService->execute(data: ['message' => 'amin'], topic: 'test-1');
         $this->assertEquals('ok', $response);
     }
 

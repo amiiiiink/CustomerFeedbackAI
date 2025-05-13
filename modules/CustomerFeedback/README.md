@@ -72,6 +72,13 @@ All tests follow the **TDD** approach and are categorized as:
 
 ---
 
+## 🧪 Kafka Tests
+- To test Kafka Producer 
+  - php artisan test --filter=test_it_publish_message_to_kafka
+- To test Kafka Consumer
+  - php artisan feedback:analyze
+
+
 ## 🚀 Roadmap
 
 1. [x] implementation for submitting feedback.

@@ -4,14 +4,15 @@ namespace Modules\CustomerFeedback\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
 use Modules\CustomerFeedback\Contracts\Repositories\FeedbackRepositoryInterface;
+use Modules\CustomerFeedback\DTOs\FeedbackDTO;
 use Modules\CustomerFeedback\Enums\FeedbackStatus;
 use Modules\CustomerFeedback\Models\Feedback;
 
 readonly class FeedbackRepository implements FeedbackRepositoryInterface
 {
-    public function store(array $data): Feedback
+    public function store(FeedbackDTO $data): Feedback
     {
-        return Feedback::query()->create($data);
+        return Feedback::query()->create($data->toArray());
     }
 
     /**
