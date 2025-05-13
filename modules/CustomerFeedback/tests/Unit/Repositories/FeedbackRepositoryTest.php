@@ -3,6 +3,7 @@
 namespace Modules\CustomerFeedback\tests\Unit\Repositories;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\CustomerFeedback\DTOs\FeedbackDTO;
 use Modules\CustomerFeedback\Models\Feedback;
 use Modules\CustomerFeedback\Repositories\FeedbackRepository;
 use Tests\TestCase;
@@ -15,7 +16,8 @@ class FeedbackRepositoryTest extends TestCase
     {
         // Arrange
         $repository = new FeedbackRepository();
-        $data = ['message' => 'محصول خوبی بود!'];
+//        $data = ['message' => 'محصول خوبی بود!'];
+        $data = new FeedbackDTO('محصول خوبی بود!');
 
         // Act
         $feedback = $repository->store($data);

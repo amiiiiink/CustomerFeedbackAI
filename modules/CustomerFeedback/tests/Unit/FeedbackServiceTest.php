@@ -24,7 +24,7 @@ class FeedbackServiceTest extends TestCase
 
         $mock->shouldReceive('store')
             ->once()
-            ->with($dto->toArray())  // Passing the array conversion of the DTO
+            ->with($dto)  // Passing the array conversion of the DTO
             ->andReturn(new Feedback(['message' => 'خیلی خوب بود']));
 
         $this->app->instance(FeedbackRepositoryInterface::class, $mock);
